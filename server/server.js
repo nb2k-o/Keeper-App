@@ -1,12 +1,21 @@
 const express = require("express")
-const mongoose = require("mongoose")
 const app = express()
 
+const cors = require("cors");
+const bodyParser = require('body-parser');
+const {MongoClient} = require('mongodb');
+app.use(cors());  
+app.use(bodyParser.json());
+
 const uri = 'mongodb+srv://nk2920:pullout@cluster0.up9rpdq.mongodb.net/?retryWrites=true&w=majority'
+const client = new MongoClient(uri); 
+const db = client.db("keeper"); 
+
+const ObjectId = require('mongodb').ObjectId;
 
 async function connect() {
     try {
-      await mongoose.connect(uri);
+      await client.connect(uri);
       console.log("Connected to MongoDB!");
       app.listen(port=5000, ()=> {console.log("server started on 5000")})
     } catch (error) {
@@ -15,23 +24,24 @@ async function connect() {
 }
 
 
-app.get("/api/notes", async (req, res) =>{
+app.get("/api", async (req, res) =>{
     const data = await db.collection("notes").find().toArray();
     res.send(data);
 });
 
-app.post("/api/notes", async (req, res) => {
-    console.log("req received");
+app.post("/api/addNote", async (req, res) => {
+    console.log("add req received");
     const data = req?.body;
 
     const result = await db.collection("notes").insertOne(data);
     res.send(result);
 })
 
-// app.delete("/api/note/{id}", async (req, res) => {
-//     console.log("req received");
-//     const result = await db.collection("notes").delete(data);
-//     res.send(result);
-// })
+app.delete("/api/removeNote/:id", async (req, res) => {
+    console.log("delete req received");
+
+    const result = await db.collection("notes").deleteOne( { "_id" : new ObjectId(req.params.id)} );
+    res.send(result);
+})
 
 connect().catch(console.error);
