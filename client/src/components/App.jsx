@@ -10,6 +10,11 @@ function App() {
 
   async function addNote(noteItem) {
 
+    if (noteItem.title === "" || noteItem.content === ""){
+      alert("Make sure both fields are not empty.")
+      return
+    }
+
     const response = await fetch(`/api/addNote`, {
         method: "POST",
         headers: {
