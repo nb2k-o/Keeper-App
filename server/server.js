@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 const uri = 'mongodb+srv://nk2920:pullout@cluster0.up9rpdq.mongodb.net/?retryWrites=true&w=majority'
 const client = new MongoClient(uri); 
 const db = client.db("keeper"); 
+const port = process.env.PORT || 3000;
 
 const ObjectId = require('mongodb').ObjectId;
 
@@ -17,7 +18,7 @@ async function connect() {
     try {
       await client.connect(uri);
       console.log("Connected to MongoDB!");
-      app.listen(port=5000, ()=> {console.log("server started on 5000")})
+      app.listen(port, "0.0.0.0", ()=> {console.log(`server started on ${port}`)})
     } catch (error) {
         console.log(error);
     }
