@@ -8,6 +8,8 @@ function App() {
   const [notes, setNotes] = useState([]);
   const [retrieved, setRetrieved] = useState(false);
 
+  const rootUrl = process.env.NODE_ENV === 'production' ?  'https://keeper-app-production-5ffc.up.railway.app': 'http://127.0.0.1:5000'
+
   async function addNote(noteItem) {
 
     if (noteItem.title === "" || noteItem.content === ""){
@@ -15,7 +17,7 @@ function App() {
       return
     }
 
-    const response = await fetch(`/api/addNote`, {
+    const response = await fetch(`${rootUrl}/api/addNote`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +44,7 @@ function App() {
 
   async function deleteNote(id) {
 
-    const response = await fetch(`/api/removeNote/${id}`, {
+    const response = await fetch(`${rootUrl}/api/removeNote/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -80,7 +82,7 @@ function App() {
   },[])
 
   const getNotes = () => {
-    fetch("/api").then(
+    fetch(`${rootUrl}/api`).then(
       response => response.json() 
     ).then(
       data =>{

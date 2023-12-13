@@ -4,7 +4,6 @@
   "description": "",
   "keywords": [],
   "main": "src/index.js",
-  "proxy": "http://keeper-app-production-5ffc.up.railway.app",
   "dependencies": {
     "react": "16.8.6",
     "react-dom": "16.8.6",
