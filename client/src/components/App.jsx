@@ -32,7 +32,6 @@ function App() {
 
       noteItem._id = await response.json().then(data => data.insertedId)
 
-    
       setNotes((prevNotes) => {
         return [...prevNotes, noteItem];
       });
@@ -52,8 +51,6 @@ function App() {
     })
 
     if(response?.status === 200) {
-
-      console.log(response.json().then(data => data.insertedId))
 
       setNotes((prevNotes) => {
         return prevNotes.filter((noteItem) => noteItem._id !== id);
